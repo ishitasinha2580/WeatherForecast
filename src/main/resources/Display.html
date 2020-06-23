@@ -48,7 +48,7 @@ $(document).ready(function () {
                     table.append("<tr><td>City:</td><td>" + result["name"] + "</td></tr>");
                     $(".num").html(result["main"]["temp"]);
                     $(".temp1").html("Min:"+result["main"]["temp_max"]+"&deg;C"+"&nbsp&nbsp Max:"+result["main"]["temp_min"]+"&deg;C");
-                    $(".temp2").html("Humidity:"+result["main"]["humidity"]+"%"+"&nbsp&nbsp Max:"+result["main"]["pressure"]+"hPa");
+                    $(".temp2").html("Humidity:"+result["main"]["humidity"]+"%"+"&nbsp&nbsp Pressure:"+result["main"]["pressure"]+"hPa");
                     $(".desc").html(result["weather"][0]["main"]);
                     $(".location").html(result["name"]);
                     $(".units").html("&deg;C");
