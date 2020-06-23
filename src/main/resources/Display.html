@@ -1,0 +1,80 @@
+
+<html>
+<head>
+    <link rel="stylesheet" href="static/formatting.css">
+    <meta charset="UTF-8">
+    <script   src="https://code.jquery.com/jquery-3.5.1.js"   integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="   crossorigin="anonymous"></script>
+    <title>Weather App</title>
+</head>
+<body>
+
+<div class="container">
+    <p class="other">What's the weather like?</p>
+
+    <div class="temp">
+        <p class="num"></p>
+        <p class="units"></p>
+    </div>
+    <p class="location"></p>
+    <p class="temp1"></p>
+    <p class="temp2"></p>
+    <p class="desc"></p>
+
+    <form onsubmit="return false">
+        <input type="text" id="formValueId" placeholder=" CITY "/>
+        <button type="submit" id="submitButton"></button>
+    </form>
+
+
+
+</div>
+<script type="text/javascript">
+$(document).ready(function () {
+    $("#submitButton").click(function (e) {
+        var validate = Validate();
+        $("#message").html(validate);
+        if (validate.length == 0) {
+            $.ajax({
+                type: "GET",
+                //url: "http://api.openweathermap.org/data/2.5/weather?q=" + $("#formValueId").val() + "&appid=240c162dbe599cc9bc44041e5c74ea32&units=metric",
+                url: "http://localhost:8080/getWeather?cityName=" + $("#formValueId").val(),
+
+
+
+                dataType: "json",
+                success: function (result, status, xhr) {
+                    var table = $("<table><tr><th>Weather Description</th></tr>");
+
+                    table.append("<tr><td>City:</td><td>" + result["name"] + "</td></tr>");
+                    $(".num").html(result["main"]["temp"]);
+                    $(".temp1").html("Min:"+result["main"]["temp_max"]+"&deg;C"+"&nbsp&nbsp Max:"+result["main"]["temp_min"]+"&deg;C");
+                    $(".temp2").html("Humidity:"+result["main"]["humidity"]+"%"+"&nbsp&nbsp Max:"+result["main"]["pressure"]+"hPa");
+                    $(".desc").html(result["weather"][0]["main"]);
+                    $(".location").html(result["name"]);
+                    $(".units").html("&deg;C");
+                },
+                error: function (xhr, status, error) {
+                    alert("Result: " + status + " " + error + " " + xhr.status + " " + xhr.statusText)
+                }
+            });
+        }
+    });
+
+    $(document).ajaxStart(function () {
+        $("img").show();
+    });
+    $(document).ajaxStop(function () {
+        $("img").hide();
+    });
+
+    function Validate() {
+        var errorMessage = "";
+        if ($("#citySelect").val() == "Select") {
+            errorMessage += "► Select City";
+        }
+        return errorMessage;
+    }
+});
+</script>
+</body>
+</html>
